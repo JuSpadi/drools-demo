@@ -1,4 +1,4 @@
-package com.jsi.drool.sample.domain;
+package com.jsi.drool.sample.domain.v1;
 
 public class Cat {
 

@@ -1,0 +1,99 @@
+import  com.jsi.drool.sample.domain.v1.Cat;
+import  com.jsi.drool.sample.domain.v1.Dog;
+import  com.jsi.drool.sample.domain.v1.House;
+import  com.jsi.drool.sample.domain.Logger;
+
+rule "Is there a house ?"
+    when
+        House()
+    then
+        System.out.println("There is a house");
+end;
+
+
+rule "Is the house keeping dog ?"
+    when
+        dog : Dog( name=="ELVIS")
+    then
+        System.out.println("ELVIS is the housekeeper");
+        dog.setHouseKeeper(true);
+        update(dog);
+end;
+
+rule "As the dog is the housekeeper, he enters the house"
+    when
+        dog : Dog( houseKeeper == true)
+    then
+        dog.setInside(true);
+        update(dog);
+        System.out.println("ELVIS is inside");
+end;
+
+rule "A cat called ROGER comes"
+    when
+
+    then
+        Cat c = new Cat();
+        c.setName("ROGER");
+        insert(c);
+        System.out.println("ROGER is the new cat");
+end;
+
+rule "ROGER comes into the house"
+    when
+        roger : Cat(name=="ROGER")
+    then
+        roger.setInside(true);
+        update(roger);
+        System.out.println("ROGER is inside");
+
+end;
+
+rule "If a cat is in the house, ELVIS wouf one time"
+    when
+        roger : Cat(name=="ROGER", inside == true)
+        elvis : Dog(name=="ELVIS", inside == true)
+    then
+        elvis.setWoufTimes(elvis.getWoufTimes()+1);
+        update(elvis);
+        System.out.println("ELVIS woufes");
+end;
+
+rule "If ELVIS woufs less than 10 times, ROGER if inside meows too"
+    when
+        Dog(name=="ELVIS", inside == true, woufTimes < 10)
+        roger : Cat(name=="ROGER", inside == true)
+    then
+        roger.setMeowTimes(roger.getMeowTimes()+1);
+        update(roger);
+        System.out.println("ROGER meows");
+end;
+
+rule "When Roger meows, Elvis woufes"
+    when
+        elvis : Dog(name=="ELVIS", inside == true)
+        roger : Cat(name=="ROGER", inside == true, meowTimes > 0)
+    then
+        elvis.setWoufTimes(elvis.getWoufTimes()+1);
+        update(elvis);
+        System.out.println("ELVIS woufes");
+end;
+
+rule "When Elvis has woufed 10 times, Roger leave the house"
+    when
+        Dog(name=="ELVIS", inside == true, woufTimes >= 10)
+        roger : Cat(name=="ROGER", inside == true)
+    then
+        roger.setInside(false);
+        update(roger);
+        System.out.println("ROGER is outside");
+end;
+
+rule "Insert Roger in the house context"
+    when
+            roger : Cat(name=="ROGER")
+            house : House()
+    then
+        house.setCat(roger);
+        update(house);
+end;

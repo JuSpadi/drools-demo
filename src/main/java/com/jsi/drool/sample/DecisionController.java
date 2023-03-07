@@ -1,6 +1,8 @@
 package com.jsi.drool.sample;
 
-import com.jsi.drool.sample.domain.House;
+import com.jsi.drool.sample.domain.v1.House;
+import com.jsi.drool.sample.domain.v2.Basket;
+import com.jsi.drool.sample.domain.v2.Line;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,5 +27,18 @@ public class DecisionController {
         kieSession.fireAllRules();
         kieSession.dispose();
         return house;
+    }
+
+    @PostMapping("/basket")
+    private Basket calculate(@RequestBody Basket basket) {
+        KieSession kieSession = kieContainer.newKieSession();
+        kieSession.insert(basket);
+        for (Line line : basket.getLines()) {
+            kieSession.insert(line);
+        }
+        //kieSession.startProcess("RF1");
+        kieSession.fireAllRules();
+        kieSession.dispose();
+        return basket;
     }
 }

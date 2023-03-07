@@ -1,4 +1,4 @@
-package com.jsi.drool.sample.domain;
+package com.jsi.drool.sample.domain.v1;
 
 public class Dog {
 
@@ -38,4 +38,5 @@ public class Dog {
     public void setInside(boolean inside) {
         this.inside = inside;
     }
+
 }
