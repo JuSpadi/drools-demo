@@ -5,3 +5,25 @@ curl --location --request POST 'http://localhost:8080/house' \
        "name": "ELVIS"
    }
 }'
+
+curl --location 'http://localhost:8080/basket' \
+--header 'Content-Type: application/json' \
+--data '{
+    "lines" :[
+        {
+            "number": "1",
+            "quantity": 10,
+            "unitaryAmount" : 100
+        },
+        {
+            "number": "2",
+            "quantity": 1,
+            "unitaryAmount" : 1
+        },
+        {
+            "number": "3",
+            "quantity": 1,
+            "unitaryAmount" : 1
+        }
+    ]
+}'
