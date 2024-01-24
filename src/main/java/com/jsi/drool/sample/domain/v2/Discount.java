@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class Discount {
 
-    String key;
-    BigDecimal amount;
-    String LineNumber;
+    private String key;
+    private BigDecimal amount;
+    private String lineNumber;
 
     public BigDecimal getAmount() {
         return amount;
@@ -17,11 +17,11 @@ public class Discount {
     }
 
     public String getLineNumber() {
-        return LineNumber;
+        return lineNumber;
     }
 
     public void setLineNumber(String lineNumber) {
-        LineNumber = lineNumber;
+        this.lineNumber = lineNumber;
     }
 
     public String getKey() {

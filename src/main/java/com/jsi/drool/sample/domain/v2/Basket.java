@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Basket {
 
-    List<Line> lines;
-    BigDecimal totalAmount;
-    List<BasketError> errors = new ArrayList<>();
+    private List<Line> lines;
+    private BigDecimal totalAmount;
+    private List<BasketError> errors = new ArrayList<>();
 
     public List<Line> getLines() {
         return lines;

@@ -2,10 +2,10 @@ package com.jsi.drool.sample.domain.v1;
 
 public class Dog {
 
-    String name;
-    Integer woufTimes = 0;
-    boolean houseKeeper;
-    boolean inside;
+    private String name;
+    private int woufTimes;
+    private boolean houseKeeper;
+    private boolean inside;
 
     public String getName() {
         return name;
@@ -15,11 +15,11 @@ public class Dog {
         this.name = name;
     }
 
-    public Integer getWoufTimes() {
+    public int getWoufTimes() {
         return woufTimes;
     }
 
-    public void setWoufTimes(Integer woufTimes) {
+    public void setWoufTimes(int woufTimes) {
         this.woufTimes = woufTimes;
     }
 

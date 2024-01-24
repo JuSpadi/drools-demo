@@ -2,8 +2,8 @@ package com.jsi.drool.sample.domain.v1;
 
 public class House {
 
-    Dog dog;
-    Cat cat;
+    private Dog dog;
+    private Cat cat;
 
     public Dog getDog() {
         return dog;

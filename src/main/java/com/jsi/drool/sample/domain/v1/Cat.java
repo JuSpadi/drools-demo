@@ -2,9 +2,9 @@ package com.jsi.drool.sample.domain.v1;
 
 public class Cat {
 
-    String name;
-    Integer meowTimes = 0;
-    boolean inside;
+    private String name;
+    private int meowTimes;
+    private boolean inside;
 
     public String getName() {
         return name;
@@ -14,11 +14,11 @@ public class Cat {
         this.name = name;
     }
 
-    public Integer getMeowTimes() {
+    public int getMeowTimes() {
         return meowTimes;
     }
 
-    public void setMeowTimes(Integer meowTimes) {
+    public void setMeowTimes(int meowTimes) {
         this.meowTimes = meowTimes;
     }
 

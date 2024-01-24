@@ -20,7 +20,7 @@ public class DecisionController {
     }
 
     @PostMapping("/house")
-    private House isTheCatInside(@RequestBody House house) {
+    public House isTheCatInside(@RequestBody House house) {
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.insert(house);
         kieSession.insert(house.getDog());
@@ -30,13 +30,12 @@ public class DecisionController {
     }
 
     @PostMapping("/basket")
-    private Basket calculate(@RequestBody Basket basket) {
+    public Basket calculate(@RequestBody Basket basket) {
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.insert(basket);
         for (Line line : basket.getLines()) {
             kieSession.insert(line);
         }
-        //kieSession.startProcess("RF1");
         kieSession.fireAllRules();
         kieSession.dispose();
         return basket;
