@@ -7,11 +7,11 @@ import java.util.List;
 public class Line {
 
 
-    public String number;
-    public BigDecimal quantity;
-    public BigDecimal unitaryAmount;
-    public BigDecimal amount;
-    public List<Discount> discounts = new ArrayList<>();
+    private String number;
+    private BigDecimal quantity;
+    private BigDecimal unitaryAmount;
+    private BigDecimal amount;
+    private List<Discount> discounts = new ArrayList<>();
 
     public String getNumber() {
         return number;
@@ -53,7 +53,7 @@ public class Line {
         this.discounts = discounts;
     }
 
-    public void reduce(BigDecimal reduction){
+    public void reduce(BigDecimal reduction) {
         this.amount = this.getAmount().subtract(reduction);
     }
 }
