@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://drools.org/drools-5.0/process"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+        xs:schemaLocation="http://drools.org/drools-5.0/process drools-processes-5.0.xsd"
+        type="RuleFlow" name="RuleFlow1" id="RF1" package-name="com.jsi.drool.sample.domain.v2" >
+
+   <header>
+   </header>
+
+   <nodes>
+       <start id="1" name="Start" />
+       <ruleSet id="2" name="Verify" ruleFlowGroup="verify" />
+       <ruleSet id="3" name="Calculation" ruleFlowGroup="calculate" />
+       <split id="4" type="3" name="checkError">
+           <constraints>
+               <constraint toNodeId="6" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >BasketError()</constraint>
+               <constraint toNodeId="3" toType="DROOLS_DEFAULT" name="constraint" priority="1" type="rule" dialect="mvel" >not BasketError()</constraint>
+           </constraints>
+       </split>
+       <end id="5" name="End" />
+       <end id="6" name="End With Error" />
+   </nodes>
+
+   <connections>
+       <connection from="1" to="2" />
+       <connection from="2" to="4" />
+       <connection from="3" to="5" />
+       <connection from="4" to="3" />
+       <connection from="4" to="6" />
+   </connections>
+
+</process>

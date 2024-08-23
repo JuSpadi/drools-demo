@@ -36,7 +36,7 @@ public class DecisionController {
         for (Line line : basket.getLines()) {
             kieSession.insert(line);
         }
-        //kieSession.startProcess("RF1");
+        kieSession.startProcess("RF1");
         kieSession.fireAllRules();
         kieSession.dispose();
         return basket;

@@ -1,0 +1,86 @@
+import com.jsi.drool.sample.domain.v2.*;
+import com.jsi.drool.sample.domain.Logger;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+
+rule "Verify line amount and quantity" ruleflow-group "verify"
+when
+   b : Basket()
+   l : Line(unitaryAmount == null || quantity == null);
+then
+    BasketError be = new BasketError();
+    be.setMessage("Missing quantity or amount on line "+ l.getNumber());
+    insert(be);
+
+    b.getErrors().add(be);
+    update(b);
+end
+
+rule "Verify line number" ruleflow-group "verify"
+when
+   b : Basket()
+   l : Line(ln : number != null);
+   list : ArrayList( size > 1) from collect( Line(number == ln))
+then
+    BasketError be = new BasketError();
+    be.setMessage("Duplicate line number : "+ l.getNumber()+ " used "+list.size()+" times");
+    insert(be);
+
+    b.getErrors().add(be);
+    update(b);
+end
+
+rule "Calculate line amount" ruleflow-group "calculate"
+when
+   Basket()
+   l : Line(ua : unitaryAmount != null, q : quantity != null, amount == null);
+then
+    l.setAmount(ua.multiply(q));
+    Logger.log("line number : "+l.getNumber()+" amount : "+l.getAmount());
+    update(l);
+end
+
+rule "Calculate total amount" ruleflow-group "calculate"
+when
+    b : Basket()
+    total : BigDecimal(intValue >= 1) from accumulate (
+           Line(a : amount != null),
+           init( BigDecimal result = new BigDecimal(0.0); ),
+           action( result = result.add(a); ),
+           reverse( result = result.min(a); ),
+           result( result )
+   )
+then
+   b.setTotalAmount(total);
+   Logger.log("total amount : "+b.getTotalAmount());
+   update(b);
+end
+
+rule "insert discount REMISE on a line" ruleflow-group "calculate"
+when
+    b : Basket(totalAmount > 1000)
+    l : Line()
+    not Line(amount.compareTo(l.getAmount()) > 0)
+    not (Discount(key == "REMISE"))
+then
+  Discount d = new Discount();
+  d.setAmount(BigDecimal.TEN);
+  d.setKey("REMISE");
+  d.setLineNumber(l.getNumber());
+  Logger.log("insert discount : "+d.getAmount());
+
+  insert(d);
+end
+
+
+rule "calculate discount on a line" ruleflow-group "calculate"
+when
+ d : Discount(ln : lineNumber, amount != null)
+ l : Line(number == ln)
+then
+  l.setAmount(l.getAmount().subtract(d.getAmount()));
+  Logger.log("line discounted number : "+l.getNumber()+" amount : "+l.getAmount());
+  l.getDiscounts().add(d);
+  update(l);
+end
+
